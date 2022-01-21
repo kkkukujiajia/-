@@ -1,0 +1,27 @@
+import numpy as np
+import cv2
+from PIL import ImageGrab
+
+
+
+#faces = face_cascade.detectMultiScale(gray, 1.03, 2, cv2.CASCADE_SCALE_IMAGE, (50, 50), (100, 100))  分别是  图片、检测缩放比例、检测次数、
+
+
+
+
+
+while(True):
+    img = np.array(ImageGrab.grab(bbox=(0,40,800,640)))
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转化为灰度图
+    faces = face_cascade.detectMultiScale(gray, 1.05, 12)  # 返回人脸矩形数组
+    i = 0
+    for (x, y, w, h) in faces:
+        img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)  # 绘制矩形
+        i = i + 1  # 统计
+    img = cv2.resize(img, (1200, 800))
+    print(i)
+    cv2.imshow('window', cv2.cvtColor(img, cv2.COLOR_BGR2RGB))#显示图像
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        cv2.destroyAllWindows()
+        break
